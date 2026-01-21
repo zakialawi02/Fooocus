@@ -21,6 +21,80 @@ def get_current_html_path(output_format=None):
     return html_name
 
 
+def get_outputs_browser_html_path():
+    return os.path.join(modules.config.path_outputs, 'outputs_browser.html')
+
+
+def _render_outputs_tree(root_path, current_path):
+    entries = []
+    try:
+        entries = sorted(
+            os.scandir(current_path),
+            key=lambda entry: (entry.is_file(), entry.name.lower()),
+        )
+    except FileNotFoundError:
+        return "<li><em>Output directory not found.</em></li>"
+
+    if not entries:
+        return "<li><em>No files found.</em></li>"
+
+    items = []
+    for entry in entries:
+        rel_path = os.path.relpath(entry.path, root_path).replace(os.sep, '/')
+        safe_path = urllib.parse.quote(rel_path)
+        display_name = entry.name
+        if entry.is_dir():
+            nested = _render_outputs_tree(root_path, entry.path)
+            items.append(
+                "<li>"
+                f"<details><summary>📁 {display_name}</summary>"
+                f"<ul>{nested}</ul>"
+                "</details>"
+                "</li>"
+            )
+        else:
+            items.append(
+                "<li>"
+                f"<a href=\"{safe_path}\" target=\"_blank\" rel=\"noopener\">📄 {display_name}</a>"
+                "</li>"
+            )
+    return "".join(items)
+
+
+def build_outputs_browser_html():
+    output_root = modules.config.path_outputs
+    os.makedirs(output_root, exist_ok=True)
+    html_path = get_outputs_browser_html_path()
+
+    css_styles = (
+        "<style>"
+        "body { background-color: #121212; color: #E0E0E0; font-family: Arial, sans-serif; }"
+        "a { color: #BB86FC; }"
+        "ul { list-style: none; padding-left: 1.2em; }"
+        "summary { cursor: pointer; }"
+        "li { margin: 4px 0; }"
+        ".path { color: #9AA0A6; font-size: 0.9em; }"
+        "</style>"
+    )
+
+    tree_html = _render_outputs_tree(output_root, output_root)
+    html = (
+        "<!DOCTYPE html>"
+        "<html><head><title>Fooocus Outputs</title>"
+        f"{css_styles}</head><body>"
+        "<h2>Fooocus Output Directory</h2>"
+        f"<div class=\"path\">{output_root}</div>"
+        "<p>Click folders to expand. Click files to open in a new tab.</p>"
+        f"<ul>{tree_html}</ul>"
+        "</body></html>"
+    )
+
+    with open(html_path, 'w', encoding='utf-8') as handle:
+        handle.write(html)
+
+    return html_path
+
+
 def log(img, metadata, metadata_parser: MetadataParser | None = None, output_format=None, task=None, persist_image=True) -> str:
     path_outputs = modules.config.temp_path if args_manager.args.disable_image_log or not persist_image else modules.config.path_outputs
     output_format = output_format if output_format else modules.config.default_output_format
