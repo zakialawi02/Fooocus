@@ -98,6 +98,25 @@ div:has(> #positive_prompt) {
   box-shadow: none !important;
 }
 
+.output-directory-link button {
+  background: none !important;
+  border: none !important;
+  padding: 0 !important;
+  color: var(--link-text-color, inherit) !important;
+  text-decoration: underline;
+  box-shadow: none !important;
+}
+
+.output-directory-link button:hover {
+  color: var(--link-text-color-hover, var(--link-text-color, inherit)) !important;
+}
+
+.output-directory-link button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+  text-decoration: none;
+}
+
 .advanced_check_row {
   width: 330px !important;
 }
