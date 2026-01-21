@@ -1,60 +1,61 @@
 {
-    "default_model": "juggernautXL_v8Rundiffusion.safetensors",
+    "default_model": "xxmix9realisticsdxl_v10.safetensors",
     "default_refiner": "None",
-    "default_refiner_switch": 0.5,
+    "default_refiner_switch": 0.4,
     "default_loras": [
         [
             true,
-            "sd_xl_offset_example-lora_1.0.safetensors",
+            "SDXL_FILM_PHOTOGRAPHY_STYLE_V1.safetensors",
             0.1
         ],
         [
             true,
-            "None",
+            "great_lighting.safetensors",
+            0.7
+        ],
+        [
+            true,
+            "PerfectEyesXL.safetensors",
+            0.9
+        ],
+        [
+            true,
+            "nsfw-xl-2.1.safetensors",
             1.0
         ],
         [
             true,
-            "None",
-            1.0
-        ],
-        [
-            true,
-            "None",
-            1.0
-        ],
-        [
-            true,
-            "None",
-            1.0
+            "Add_Details_v1.2.safetensors",
+            0.7
         ]
     ],
-    "default_cfg_scale": 4.0,
+    "default_cfg_scale": 3.0,
     "default_sample_sharpness": 2.0,
     "default_sampler": "dpmpp_2m_sde_gpu",
     "default_scheduler": "karras",
     "default_performance": "Speed",
-    "default_prompt": "",
-    "default_prompt_negative": "",
+    "default_prompt": "n0k1a Early 2010s snapshot photo captured with a phone and uploaded to Facebook, featuring flat and direct artificial lighting, and a neutral white color balance with slightly blown-out highlights. A square-format photo of a blonde woman indoors, taken late at night in a small, cluttered room. She sits casually on a chair, leaning slightly forward with her arm extended to take a selfie at a slightly elevated high-angle perspective. Her soft, layered bob haircut frames her face, with full bangs that accentuate her wide, contact-lens-enhanced eyes. She wears a loose, thin white T-shirt that clings naturally to her shoulders , revealing a modest necklace, paired with short denim bottoms that sit casually on her thighs. large covered breasts. Her expression is subtly pouty, almost cartoonish, embodying the \"kawaii\" culture of the time. The lighting is likely from an in-camera flash or overhead bulb, causing her skin to appear pale and smooth, while casting harsh shadows under her jaw and neck. The image\u2019s background includes domestic details like a folding chair, plastic bags, and shelving with various household items, all softly blurred by a wide aperture. The photo exudes a candid, nostalgic charm, with low contrast and slightly muted colors. There's a faint softness to the overall focus, as expected from early-generation phone cameras. The aesthetic quality is moderate but emotionally resonant\u2014imperfect in technical execution but rich with personality and early social media-era atmosphere. The shallow depth of field gently isolates her from the surroundings, while still retaining enough room context to feel personal and real.",
+    "default_prompt_negative": "unrealistic, saturated, high contrast, big nose, painting, drawing, sketch, cartoon, anime, manga, render, CG, 3d, watermark, signature, label, cropped, out of frame, cut off, censored, jpeg artifacts, out of focus, glitch, duplicate",
     "default_styles": [
         "Fooocus V2",
-        "Fooocus Enhance",
-        "Fooocus Sharp"
+        "Fooocus Photograph",
+        "Fooocus Negative",
+        "Fooocus Enhance"
     ],
-    "default_aspect_ratio": "1152*896",
+    "default_aspect_ratio": "896*1152",
     "default_overwrite_step": -1,
     "checkpoint_downloads": {
-        "juggernautXL_v8Rundiffusion.safetensors": "https://huggingface.co/lllyasviel/fav_models/resolve/main/fav/juggernautXL_v8Rundiffusion.safetensors"
+        "xxmix9realisticsdxl_v10.safetensors": "https://huggingface.co/yanex0/xxMix-9realistic/resolve/main/xxmix9realisticsdxl_v10.safetensors",
+        "great_lighting.safetensors": "https://huggingface.co/ntc-ai/SDXL-LoRA-slider.great-lighting/resolve/43097cc23084d7c9e7d49a99d2c7bcb1bc443b24/great%20lighting.safetensors",
+        "PerfectEyesXL.safetensors": "https://huggingface.co/bad-tomich1/xl_loras_and_checkpoint/resolve/0c8aa4014e6b6e86bd6254e1f39f1c944a871801/models/loras/PerfectEyesXL.safetensors",
+        "nsfw-xl-2.1.safetensors": "https://huggingface.co/Keltezaa/SD1_V2_1/resolve/main/nsfw-xl-2.1.safetensors",
+        "Add_Details_v1.2.safetensors": "https://huggingface.co/OedoSoldier/detail-tweaker-lora/resolve/main/add_detail.safetensors"
     },
-    "embeddings_downloads": {},
+    "embeddings_downloads": {
+        "CyberRealistic_Negative_SDXL.safetensors" : "https://huggingface.co/cyberdelia/CyberRealistic_Negative/resolve/main/CyberRealistic_Negative_SDXL.safetensors"
+    },
     "lora_downloads": {
-        "sd_xl_offset_example-lora_1.0.safetensors": "https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0/resolve/main/sd_xl_offset_example-lora_1.0.safetensors"
+        "SDXL_FILM_PHOTOGRAPHY_STYLE_V1.safetensors": "https://huggingface.co/mashb1t/fav_models/resolve/main/fav/SDXL_FILM_PHOTOGRAPHY_STYLE_V1.safetensors"
     },
-    "previous_default_models": [
-        "juggernautXL_version8Rundiffusion.safetensors",
-        "juggernautXL_version7Rundiffusion.safetensors",
-        "juggernautXL_v7Rundiffusion.safetensors",
-        "juggernautXL_version6Rundiffusion.safetensors",
-        "juggernautXL_v6Rundiffusion.safetensors"
-    ]
+    "previous_default_models": ["realisticStockPhoto_v10.safetensors"]
 }
