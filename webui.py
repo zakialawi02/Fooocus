@@ -19,7 +19,7 @@ import launch
 from extras.inpaint_mask import SAMOptions
 
 from modules.sdxl_styles import legal_style_names
-from modules.private_logger import get_current_html_path
+from modules.private_logger import build_outputs_browser_html, get_current_html_path
 from modules.ui_gradio_extensions import reload_javascript
 from modules.auth import auth_enabled, check_auth
 from modules.util import is_json
@@ -617,6 +617,24 @@ with shared.gradio_root:
 
                 history_link = gr.HTML()
                 shared.gradio_root.load(update_history_link, outputs=history_link, queue=False, show_progress=False)
+
+                outputs_directory_path = gr.Textbox(visible=False)
+                outputs_directory_button = gr.Button(
+                    value='\U0001F4C2 Output directory',
+                    interactive=not args_manager.args.disable_image_log,
+                )
+                outputs_directory_button.click(
+                    build_outputs_browser_html,
+                    outputs=outputs_directory_path,
+                    queue=False,
+                    show_progress=False,
+                ).then(
+                    None,
+                    inputs=outputs_directory_path,
+                    _js='(path)=>{ if (path) { window.open("file=" + path, "_blank"); } }',
+                    queue=False,
+                    show_progress=False,
+                )
 
             with gr.Tab(label='Styles', elem_classes=['style_selections_tab']):
                 style_sorter.try_load_sorted_styles(
