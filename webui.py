@@ -16,6 +16,7 @@ import modules.meta_parser
 import args_manager
 import copy
 import launch
+import webui_others
 from extras.inpaint_mask import SAMOptions
 
 from modules.sdxl_styles import legal_style_names
@@ -672,7 +673,7 @@ with shared.gradio_root:
             with gr.Tab(label='Models'):
                 with gr.Group():
                     with gr.Row():
-                        base_model = gr.Dropdown(label='Base Model (SDXL only)', choices=modules.config.model_filenames, value=modules.config.default_base_model_name, show_label=True)
+                        base_model = gr.Dropdown(label='Base Model (SDXL only)', choices=['None'] + modules.config.model_filenames, value=modules.config.default_base_model_name, show_label=True)
                         refiner_model = gr.Dropdown(label='Refiner (SDXL or SD 1.5)', choices=['None'] + modules.config.model_filenames, value=modules.config.default_refiner_model_name, show_label=True)
 
                     refiner_switch = gr.Slider(label='Refiner Switch At', minimum=0.1, maximum=1.0, step=0.0001,
@@ -703,6 +704,19 @@ with shared.gradio_root:
 
                 with gr.Row():
                     refresh_files = gr.Button(label='Refresh', value='\U0001f504 Refresh All Files', variant='secondary', elem_classes='refresh_button')
+
+            webui_others.build_others_tab(
+                prompt=prompt,
+                negative_prompt=negative_prompt,
+                aspect_ratio=aspect_ratios_selection,
+                performance=performance_selection,
+                styles=style_selections,
+                base_model=base_model,
+                refiner_model=refiner_model,
+                refiner_switch=refiner_switch,
+                image_number=image_number,
+                lora_ctrls=lora_ctrls,
+            )
             with gr.Tab(label='Advanced'):
                 guidance_scale = gr.Slider(label='Guidance Scale', minimum=1.0, maximum=30.0, step=0.01,
                                            value=modules.config.default_cfg_scale,
@@ -888,7 +902,7 @@ with shared.gradio_root:
 
                 def refresh_files_clicked():
                     modules.config.update_files()
-                    results = [gr.update(choices=modules.config.model_filenames)]
+                    results = [gr.update(choices=['None'] + modules.config.model_filenames)]
                     results += [gr.update(choices=['None'] + modules.config.model_filenames)]
                     results += [gr.update(choices=[flags.default_vae] + modules.config.vae_filenames)]
                     if not args_manager.args.disable_preset_selection:
