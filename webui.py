@@ -24,6 +24,7 @@ from modules.ui_gradio_extensions import reload_javascript
 from modules.auth import auth_enabled, check_auth
 from modules.util import is_json
 
+import webui_others
 def get_task(*args):
     args = list(args)
     args.pop(0)
@@ -556,7 +557,7 @@ with shared.gradio_root:
                                         outputs=enhance_input_panel, queue=False, show_progress=False, _js=switch_js)
 
         with gr.Column(scale=1, visible=modules.config.default_advanced_checkbox) as advanced_column:
-            with gr.Tab(label='Settings'):
+            with gr.Tab(label='Settings') as settings_tab:
                 if not args_manager.args.disable_preset_selection:
                     preset_selection = gr.Dropdown(label='Preset',
                                                    choices=modules.config.available_presets,
@@ -661,10 +662,10 @@ with shared.gradio_root:
                                                        show_progress=False).then(
                     lambda: None, _js='()=>{refresh_style_localization();}')
 
-            with gr.Tab(label='Models'):
+            with gr.Tab(label='Models') as model_tab:
                 with gr.Group():
                     with gr.Row():
-                        base_model = gr.Dropdown(label='Base Model (SDXL only)', choices=modules.config.model_filenames, value=modules.config.default_base_model_name, show_label=True)
+                        base_model = gr.Dropdown(label='Base Model (SDXL only)', choices=['None'] + modules.config.model_filenames, value=modules.config.default_base_model_name, show_label=True)
                         refiner_model = gr.Dropdown(label='Refiner (SDXL or SD 1.5)', choices=['None'] + modules.config.model_filenames, value=modules.config.default_refiner_model_name, show_label=True)
 
                     refiner_switch = gr.Slider(label='Refiner Switch At', minimum=0.1, maximum=1.0, step=0.0001,
@@ -880,7 +881,7 @@ with shared.gradio_root:
 
                 def refresh_files_clicked():
                     modules.config.update_files()
-                    results = [gr.update(choices=modules.config.model_filenames)]
+                    results = [gr.update(choices=['None'] + modules.config.model_filenames)]
                     results += [gr.update(choices=['None'] + modules.config.model_filenames)]
                     results += [gr.update(choices=[flags.default_vae] + modules.config.vae_filenames)]
                     if not args_manager.args.disable_preset_selection:
@@ -895,6 +896,43 @@ with shared.gradio_root:
                     refresh_files_output += [preset_selection]
                 refresh_files.click(refresh_files_clicked, [], refresh_files_output + lora_ctrls,
                                     queue=False, show_progress=False)
+
+            advanced_checkbox.select(
+                fn=refresh_files_clicked,
+                inputs=[],
+                outputs=refresh_files_output + lora_ctrls,
+                queue=False,
+                show_progress=False
+            )
+
+            settings_tab.select(
+                fn=refresh_files_clicked,
+                inputs=[],
+                outputs=refresh_files_output + lora_ctrls,
+                queue=False,
+                show_progress=False
+            )
+
+            model_tab.select(
+                fn=refresh_files_clicked,
+                inputs=[],
+                outputs=refresh_files_output + lora_ctrls,
+                queue=False,
+                show_progress=False
+            )
+
+            webui_others.build_others_tab(
+                prompt=prompt,
+                negative_prompt=negative_prompt,
+                aspect_ratio=aspect_ratios_selection,
+                performance=performance_selection,
+                styles=style_selections,
+                base_model=base_model,
+                refiner_model=refiner_model,
+                refiner_switch=refiner_switch,
+                image_number=image_number,
+                lora_ctrls=lora_ctrls
+            )
 
         state_is_generating = gr.State(False)
 

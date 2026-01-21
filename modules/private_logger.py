@@ -21,8 +21,9 @@ def get_current_html_path(output_format=None):
     return html_name
 
 
-def get_outputs_browser_html_path():
-    return os.path.join(modules.config.path_outputs, 'outputs_browser.html')
+def get_outputs_browser_html_path(output_root=None):
+    output_root = output_root or modules.config.path_outputs
+    return os.path.join(output_root, 'outputs_browser.html')
 
 
 def _render_outputs_tree(root_path, current_path):
@@ -62,9 +63,9 @@ def _render_outputs_tree(root_path, current_path):
 
 
 def build_outputs_browser_html():
-    output_root = modules.config.path_outputs
+    output_root = os.path.abspath(modules.config.path_outputs)
     os.makedirs(output_root, exist_ok=True)
-    html_path = get_outputs_browser_html_path()
+    html_path = get_outputs_browser_html_path(output_root)
 
     css_styles = (
         "<style>"
