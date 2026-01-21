@@ -622,6 +622,7 @@ with shared.gradio_root:
                 outputs_directory_button = gr.Button(
                     value='\U0001F4C2 Output directory',
                     interactive=not args_manager.args.disable_image_log,
+                    elem_classes=['output-directory-link'],
                 )
                 outputs_directory_button.click(
                     build_outputs_browser_html,
